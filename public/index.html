@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Image Generator</h1>
+    </header>
+    <main class="container">
+        <section class="prompts-section">
+            <div id="prompt-container">
+                <div class="prompt-field">
+                    <label for="prompt-1">Prompt 1</label>
+                    <textarea id="prompt-1" rows="3" required
+                        aria-label="Campo para inserir o primeiro prompt"></textarea>
+                    <button type="button" class="copy-prompt" aria-label="Copiar Prompt"
+                        onclick="copyPrompt(this)">📋</button>
+                    <button type="button" class="delete-prompt" aria-label="Deletar Prompt"
+                        onclick="deletePrompt(this)">🗑️</button>
+                </div> 
+            </div>
+            <button id="add-prompt-button" type="button" onclick="addNewPrompt()">Add new prompt</button>
+        </section>
+
+        <section class="input-group-container">
+            <div class="input-group">
+                <label for="viewpoint">View:</label>
+                <select id="viewpoint" name="viewpoint">
+                    <option value="none">None</option>
+                    <option value="close-up">Close-up</option>
+                    <option value="extreme-close-up">Extreme Close-up</option>
+                    <option value="medium-shot">Medium Shot</option>
+                    <option value="wide-angle">Wide Angle</option>
+                    <option value="aerial">Aerial</option>
+                    <option value="first-person">First person</option>
+                    <option value="over-the-shoulder">Over the shoulder</option>
+                    <option value="dutch-angle">Dutch angle</option>
+                    <option value="panoramic">Panoramic</option>
+                    <option value="macro">Macro</option>
+                    <option value="telephoto">Telephoto</option>
+                    <option value="birds-eye">Bird's Eye View</option>
+                    <option value="low-angle">Low Angle</option>
+                    <option value="high-angle">High Angle</option>
+                    <option value="tilted">Tilted</option>
+                    <option value="tracking-shot">Tracking Shot</option>
+                    <option value="overhead">Overhead View</option>
+                    <option value="split-screen">Split Screen</option>
+                    <option value="wide-field">Wide Field</option>
+                    <option value="360-degree">360-Degree View</option>
+                    <option value="point-of-view">Point of View (POV)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="style">Style:</label>
+                <select id="style">
+                    <option value="none">None</option>
+                    <option value="3d-model">3D Model</option>
+                    <option value="hyper-realistic">Hyper Realistic</option>
+                    <option value="analog-film">Analog Film</option>
+                    <option value="anime">Anime</option>
+                    <option value="old-cartoon-30s">Old cartoon 30s</option>
+                    <option value="70s">70s</option>
+                    <option value="80s">80s</option>
+                    <option value="cinematic">Cinematic</option>
+                    <option value="comic-book">Comic Book</option>
+                    <option value="digital-art">Digital Art</option>
+                    <option value="fantasy-art">Fantasy Art</option>
+                    <option value="isometric">Isometric</option>
+                    <option value="line-art">Line Art</option>
+                    <option value="low-poly">Low Poly</option>
+                    <option value="neon-punk">Neon Punk</option>
+                    <option value="origami">Origami</option>
+                    <option value="cartoon">Cartoon</option>
+                    <option value="cyberpunk">Cyberpunk</option>
+                    <option value="glow-in-the-dark">Glow in the Dark</option>
+                    <option value="mad-max">Mad Max</option>
+                    <option value="photographic">Photographic</option>
+                    <option value="pixel-art">Pixel Art</option>
+                    <option value="pixar">Pixar</option>
+                    <option value="texture">Texture</option>
+                    <option value="science-fiction">Science Fiction</option>
+                    <option value="surreal">Surreal</option>
+                    <option value="vintage">Vintage</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="lighting">Lighting:</label>
+                <select id="lighting" name="lighting">
+                    <option value="none">None</option>
+                    <option value="natural">Natural</option>
+                    <option value="studio">Studio</option>
+                    <option value="golden-hour">Golden Hour</option>
+                    <option value="blue-hour">Blue Hour</option>
+                    <option value="dramatic">Dramatic</option>
+                    <option value="low-key">Low Key</option>
+                    <option value="high-key">High Key</option>
+                    <option value="backlit">Backlit</option>
+                    <option value="soft-box">Soft Box</option>
+                    <option value="ring-light">Ring Light</option>
+                    <option value="neon">Neon</option>
+                    <option value="candlelight">Candlelight</option>
+                    <option value="moonlight">Moonlight</option>
+                    <option value="fire">Fire</option>
+                    <option value="underwater">Underwater</option>
+                </select>
+            </div>
+            <div class="input-group aspect-ratio-group">
+                <label for="aspect-ratio">Ratio:</label>
+                <select id="aspect-ratio">
+                    <option value="none">None</option>
+                    <option value="16:9">16:9</option>
+                    <option value="4:3">4:3</option>
+                    <option value="1:1">1:1</option>
+                    <option value="9:16">9:16</option>
+                </select>
+            </div>
+        </section>
+
+        <button id="generate-btn" onclick="generateImages(true)" aria-label="Gerar Imagens">
+            <i class="fas fa-image"></i> Generate
+        </button>
+
+        <div class="loading hidden">
+            <div class="loading-spinner" aria-live="polite">
+                <div class="spinner"></div>
+                <p>Gerando imagens...</p>
+            </div>
+        </div>
+
+        <section id="result">
+            <!-- Imagens geradas vão preencher aqui -->
+        </section>
+
+        <div id="image-preview" class="image-preview">
+            <div class="preview-container">
+                <button class="close-button" onclick="closePreview()">×</button>
+                <div class="preview-image-container">
+                    <img id="preview-image" src="" alt="Preview da imagem">
+                    <button class="nav-button-left" onclick="navigateImage(-1)"
+                        aria-label="Imagem anterior">&lt;</button>
+                    <button class="nav-button-right" onclick="navigateImage(1)"
+                        aria-label="Próxima imagem">&gt;</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-overlay hidden" id="popupOverlay">
+            <div class="popup-content">
+                <button class="close-button" onclick="closePopup()">x</button>
+                <img src="" alt="Imagem em alta resolução" class="popup-image" id="popupImage">
+                <div class="popup-buttons">
+                    <button class="popup-button" id="zoomInBtn" aria-label="Aumentar zoom">+</button>
+                    <button class="popup-button" id="zoomOutBtn" aria-label="Reduzir zoom">-</button>
+                    <button class="popup-button" id="downloadBtn" aria-label="Baixar imagem">Download</button>
+                </div>
+                <button class="nav-button-left" onclick="navigateImage(-1)" aria-label="Imagem anterior">&lt;</button>
+                <button class="nav-button-right" onclick="navigateImage(1)" aria-label="Próxima imagem">&gt;</button>
+            </div>
+        </div>
+
+        <button id="continue-btn" onclick="generateImages(false)" class="hidden-gerar-mais-img"
+            aria-label="Gerar mais imagens">
+            <i class="fas fa-sync-alt"></i> Generate more images
+        </button>
+    </main>
+    <script src="script.js" defer></script>
+</body>
+
+</html>
